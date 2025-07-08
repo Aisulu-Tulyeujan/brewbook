@@ -1,0 +1,51 @@
+{% extends "brewbookapp/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    {% include 'brewbookapp/navbar.html' %}
+    <!-- create cards as many as the drinks -->
+    <div class="container-lg my-5">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for drink in drinks%}
+                <div class="col">
+                    <div class="card drink-card" data-bs-toggle="modal" data-bs-target="#drinkModal{{ drink.id }}">
+                        <img src="{{ drink.photo.url }}" class="card-img-top img-fluid" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ drink.name }}</h5>
+                            <ul>
+                                {% for ingredient in drink.ingredients.all %}
+                                    <li>{{ ingredient.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="drinkModal{{ drink.id }}" tabindex="-1" aria-labelledby="drinkModalLabel{{ drink.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="drinkModal{{ drink.id }}" aria-labelledby="drinkModal{{ drink.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ drink.name }}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ drink.photo.url }}" class="img-fluid" alt="{{ drink.photo }}">
+                                    <ul>
+                                        {% for ingredient in drink.ingredients.all %}
+                                            <li>{{ ingredient.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

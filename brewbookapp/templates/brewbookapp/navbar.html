@@ -1,0 +1,61 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-custom">
+<div class="container">
+    <a class="navbar-brand" href="#">
+    <img src="{% static 'drink_photos/logo.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+    <span class="ms-2 fs-2">BrewBook</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse fs-4" id="navbarSupportedContent">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+        <li class="nav-item" display="none">
+            <a class="nav-link" id="nav-new-drink" href="{% url 'new_drink' %}">New Drink</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+        <a class="nav-link" href="#">Favorites</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item" display="none">
+            <a class="nav-link" href="{% url 'logout_view' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item" id="nav-login">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+        </li>
+        {% endif %}
+    </ul>
+    </div>
+</div>
+</nav>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <form action="{% url 'login_view' %}" method="post">
+    {% csrf_token %}
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="p-1">
+            <input class="form-control" type="text" name="username" placeholder="Username">
+            </div>
+            <div class="p-1">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="form-text " href="{% url 'register' %}">Register</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-custom">Login</button>
+        </div>
+        </div>
+    </form>
+    </div>
+</div>

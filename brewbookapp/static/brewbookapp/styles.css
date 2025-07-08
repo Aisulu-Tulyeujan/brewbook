@@ -1,0 +1,65 @@
+.navbar-custom {
+    background-color: rgb(189, 132, 63) !important;
+}
+
+.navbar-brand {
+    color: aliceblue;
+}
+
+.nav-link {
+    color: aliceblue;
+}
+
+.card h5 {
+  text-align: center;
+}
+
+.card-img-top {
+    height: 140px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.drink-card {
+    height: 370px;
+}
+
+.btn-custom {
+    background-color: rgb(189, 132, 63) !important;
+    color: aliceblue;
+}
+
+.register-form {
+    width: 300px !important;
+}
+
+.register-btn {
+    background-color: rgb(189, 132, 63);
+    color: aliceblue;
+}
+
+.new-drink-container form {
+    width: 450px !important;
+    color: rgb(90, 57, 18);
+}
+
+.new-drink-container .form-control {
+    border: 1px solid rgb(90, 57, 18);
+    background-color: rgba(255, 239, 220, 0.164);
+}
+
+#drink-added {
+    width: 200px;
+    display: inline-block;
+    height: 45px;
+    align-items: center;
+    padding: 9px;
+}
+
+.alert-container {
+    position: absolute ;
+    top: 75px;
+    display: flex;
+    justify-content:end;
+    width: 100%;
+}

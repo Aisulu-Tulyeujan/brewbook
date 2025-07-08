@@ -1,0 +1,14 @@
+{% extends 'brewbookapp/layout.html' %}
+{% load static %}
+
+{% block body %}
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input type="text", name="username", placeholder="Username">
+        <input type="password", name="password", placeholder="Password">
+        {% if message %}
+            <div class="form-text">{{ message }}</div>
+        {% endif %}
+        <input type="submit" value="Login">
+    </form>
+{% block end %}

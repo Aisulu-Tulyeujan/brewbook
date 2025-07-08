@@ -1,0 +1,49 @@
+{% extends 'brewbookapp/layout.html'%}
+{% load static %}
+
+{% block body %}
+    {% include 'brewbookapp/navbar.html' %}
+    <div class="alert-container">
+        {% if message %}
+            <div class="alert alert-success"role="alert" id="drink-added">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="container new-drink-container my-3 d-flex justify-content-center">
+        <form action="{% url 'new_drink' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input class="form-control" id="name" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="ingredients" class="form-label">Ingredients:</label>
+                <textarea class="form-control" id="ingredients" name="ingredients" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="instruction" class="form-label">Instruction:</label>
+                <textarea class="form-control" id="instruction" name="instruction" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="photo" class="form-label">Photo:</label>
+                <input class="form-control" type="file" id="photo" name="photo">
+            </div>
+            <div class="mb-3">
+                <label for="video_url" class="form-label">Video Link:</label>
+                <input class="form-control" id="video_url" name="video_url">
+            </div>
+            <div class="mb-3">
+                <label for="video_file" class="form-label">Video File:</label>
+                <input class="form-control" type="file" id="video_file" name="video_file">
+            </div>
+            <div class="mb-3">
+                <label for="more_information" class="form-label">More information:</label>
+                <textarea class="form-control" id="more_information" name="more_information" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-custom">Submit</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
