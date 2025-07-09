@@ -63,3 +63,9 @@
     justify-content:end;
     width: 100%;
 }
+
+.modal-drink-image img {
+    max-height: 300px;
+    width: 100%;
+    object-fit: cover;
+}
