@@ -13,45 +13,60 @@
                         <img src="{{ drink.photo.url }}" class="card-img-top img-fluid" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ drink.name }}</h5>
-                            <ul>
-                                {% for ingredient in drink.ingredients.all %}
-                                    <li>{{ ingredient.name }}</li>
-                                {% endfor %}
-                            </ul>
+                            <div class="card-ingredients">
+                                <ul>
+                                    {% for ingredient in drink.ingredients.all %}
+                                        <li>{{ ingredient.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal fade" id="drinkModal{{ drink.id }}" tabindex="-1" aria-labelledby="drinkModalLabel{{ drink.id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="drinkModal{{ drink.id }}" aria-labelledby="drinkModal{{ drink.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" id="drinkModal{{ drink.id }}" data-drink-id="{{ drink.id }}" aria-labelledby="drinkModal{{ drink.id }}" aria-hidden="true">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ drink.name }}</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="modal-drink-image my-3">
-                                    <img src="{{ drink.photo.url }}" class="img-fluid" alt="{{ drink.photo }}">
-                                </div>
                                 <ul>
                                     {% for ingredient in drink.ingredients.all %}
                                         <li>{{ ingredient.name }}</li>
                                     {% endfor %}
                                 </ul>
                                 <p>{{ drink.instruction|linebreaksbr }}</p>
-                                {% if drink.video_url %}
-                                    <div class="ratio ratio-16x9 my3">
-                                        <iframe 
-                                            src="https://www.youtube.com/embed/{{ drink.video_url|slice:'-11:' }}"
-                                            title="youtube video"
-                                            frameborder="0"
-                                            allowfullscreen>
-                                        </iframe>
+                                <div class="video-container my-3">
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-3">
+                                            {% if drink.video_url %}
+                                                <div class="ratio ratio-1x1 my-3 drink-video">
+                                                    <iframe 
+                                                        src="https://www.youtube.com/embed/{{ drink.video_url|slice:'-11:' }}"
+                                                        title="youtube video"
+                                                        frameborder="0"
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            {% if drink.video %}
+                                                <video class="drink-video my-3" controls>
+                                                    <source src="{{ drink.video.url }}">
+                                                </video>
+                                            {% endif %}
+                                        </div>
                                     </div>
+                                </div>
+                                {% if drink.fun_facts %}
+                                    <p>{{ drink.fun_facts|linebreaksbr }}</p>
                                 {% endif %}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button data-drink-id="{{ drink.id }}" type="button" class="btn btn-primary edit-drink">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -60,3 +75,4 @@
         </div>
     </div>
 {% endblock %}
+

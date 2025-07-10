@@ -15,7 +15,7 @@
 }
 
 .card-img-top {
-    height: 140px;
+    height: 200px;
     object-fit: cover;
     width: 100%;
 }
@@ -68,4 +68,18 @@
     max-height: 300px;
     width: 100%;
     object-fit: cover;
+}
+
+.drink-video {
+    width: 100%;
+    max-height: 500px;
+}
+
+.card-ingredients {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

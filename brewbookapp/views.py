@@ -78,3 +78,32 @@ def new_drink(request):
         })
     else:
         return render(request, 'brewbookapp/new_drink.html')
+
+def edit_drink(request, drink_id):
+    drink = Drink.objects.get(id=drink_id)
+    if request.method == "POST":
+        drink.name = request.POST["name"]
+        drink.instruction = request.POST["instruction"]
+        if request.FILES.get("photo"):
+            drink.photo = request.FILES.get("photo")
+        if request.POST.get("video_url"):
+            drink.video_url = request.POST.get("video_url")
+        if request.FILES.get("video_file"):
+            drink.video = request.FILES.get("video_file")
+        drink.fun_facts = request.POST.get("more_information")
+        drink.save()
+        current_ingredients = set(Ingredient.objects.filter(drink=drink).values_list("name", flat=True))
+        new_ingredients = set(name.strip() for name in request.POST["ingredients"].split(","))
+        to_add = new_ingredients-current_ingredients
+        to_delete = current_ingredients-new_ingredients
+        Ingredient.objects.filter(drink=drink,name__in=to_delete).delete()
+        for name in to_add:
+            Ingredient.objects.create(drink=drink,name=name)
+        return render(request, 'brewbookapp/new_drink.html', {
+            "message": "Drink added."
+        })
+    else:
+        return render(request, 'brewbookapp/new_drink.html', {
+            "drink": drink
+        })
+    

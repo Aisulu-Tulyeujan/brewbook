@@ -11,38 +11,50 @@
         {% endif %}
     </div>
     <div class="container new-drink-container my-3 d-flex justify-content-center">
-        <form action="{% url 'new_drink' %}" method="post" enctype="multipart/form-data">
+        <form action="{% if drink %}{% url 'edit_drink' drink.id %}{% else %}{% url 'new_drink' %}{% endif %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="name" class="form-label">Name:</label>
-                <input class="form-control" id="name" name="name">
+                <input class="form-control" id="name" name="name" value="{{ drink.name }}">
             </div>
             <div class="mb-3">
                 <label for="ingredients" class="form-label">Ingredients:</label>
-                <textarea class="form-control" id="ingredients" name="ingredients" rows="3"></textarea>
+                <textarea class="form-control" id="ingredients" name="ingredients" rows="3" >{% for item in drink.ingredients.all %}{{ item.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</textarea>
             </div>
             <div class="mb-3">
                 <label for="instruction" class="form-label">Instruction:</label>
-                <textarea class="form-control" id="instruction" name="instruction" rows="8"></textarea>
+                <textarea class="form-control" id="instruction" name="instruction" rows="8" >{{ drink.instruction }}</textarea>
             </div>
             <div class="mb-3">
-                <label for="photo" class="form-label">Photo:</label>
+                {% if drink %}
+                    <label for="photo" class="form-label">Change Photo:</label>
+                {% else %}
+                    <label for="photo" class="form-label">Photo:</label>
+                {% endif %}
                 <input class="form-control" type="file" id="photo" name="photo">
             </div>
             <div class="mb-3">
-                <label for="video_url" class="form-label">Video Link:</label>
+                {% if drink %}
+                    <label for="video_url" class="form-label">Change Video Link:</label>
+                {% else %}
+                    <label for="video_url" class="form-label">Video Link:</label>
+                {% endif %}
                 <input class="form-control" id="video_url" name="video_url">
             </div>
             <div class="mb-3">
-                <label for="video_file" class="form-label">Video File:</label>
+                {% if drink %}
+                    <label for="video_file" class="form-label">Change Video File:</label>
+                {% else %}
+                    <label for="video_file" class="form-label">Video File:</label>
+                {% endif %}
                 <input class="form-control" type="file" id="video_file" name="video_file">
             </div>
             <div class="mb-3">
                 <label for="more_information" class="form-label">More information:</label>
-                <textarea class="form-control" id="more_information" name="more_information" rows="3"></textarea>
+                <textarea class="form-control" id="more_information" name="more_information" rows="10">{{ drink.fun_facts }}</textarea>
             </div>
             <div class="mb-3">
-                <button type="submit" class="btn btn-custom">Submit</button>
+                <button type="submit" class="btn btn-custom" data-drink-id="{{ drink.id }}">Submit</button>
             </div>
         </form>
     </div>
