@@ -64,11 +64,6 @@
     width: 100%;
 }
 
-.modal-drink-image img {
-    max-height: 300px;
-    width: 100%;
-    object-fit: cover;
-}
 
 .drink-video {
     width: 100%;
@@ -82,4 +77,14 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.like-btn i {
+  font-size: 24px;
+  transition: color 0.2s ease;
+  color: rgb(189, 132, 63) !important;
+}
+
+.custom-like-btn {
+  color: rgb(189, 132, 63);
 }

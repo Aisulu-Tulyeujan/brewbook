@@ -16,9 +16,6 @@
             <a class="nav-link" id="nav-new-drink" href="{% url 'new_drink' %}">New Drink</a>
         </li>
         {% endif %}
-        <li class="nav-item">
-        <a class="nav-link" href="#">Favorites</a>
-        </li>
         {% if user.is_authenticated %}
         <li class="nav-item" display="none">
             <a class="nav-link" href="{% url 'logout_view' %}">Logout</a>

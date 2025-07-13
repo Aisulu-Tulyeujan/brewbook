@@ -2,16 +2,18 @@ from django.db import IntegrityError
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 import json
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
-from brewbookapp.models import User, Drink, Favorite, Ingredient
+from brewbookapp.models import User, Drink, Liked, Ingredient
 # Create your views here.
 
 def index(request):        
     drinks = Drink.objects.all()
+    liked_drinks = [like.drink for like in Liked.objects.filter(user=request.user)]
     return render(request, "brewbookapp/index.html", {
         "drinks": drinks,
+        "liked_drinks":liked_drinks
     })
 
 def login_view(request):
@@ -85,10 +87,12 @@ def edit_drink(request, drink_id):
         drink.name = request.POST["name"]
         drink.instruction = request.POST["instruction"]
         if request.FILES.get("photo"):
+            drink.photo.delete()
             drink.photo = request.FILES.get("photo")
         if request.POST.get("video_url"):
             drink.video_url = request.POST.get("video_url")
         if request.FILES.get("video_file"):
+            drink.video.delete()
             drink.video = request.FILES.get("video_file")
         drink.fun_facts = request.POST.get("more_information")
         drink.save()
@@ -99,11 +103,20 @@ def edit_drink(request, drink_id):
         Ingredient.objects.filter(drink=drink,name__in=to_delete).delete()
         for name in to_add:
             Ingredient.objects.create(drink=drink,name=name)
-        return render(request, 'brewbookapp/new_drink.html', {
-            "message": "Drink added."
-        })
+        return HttpResponseRedirect(reverse('index'))
     else:
         return render(request, 'brewbookapp/new_drink.html', {
             "drink": drink
         })
     
+
+def like(request, drink_id):
+    drink = Drink.objects.get(id=drink_id)
+    Liked.objects.create(user=request.user,drink=drink)
+    return JsonResponse({'status': 'liked'})
+
+
+def unlike(request, drink_id):
+    drink = Drink.objects.get(id=drink_id)
+    Liked.objects.get(user=request.user,drink=drink).delete()
+    return JsonResponse({'status': 'unliked'})

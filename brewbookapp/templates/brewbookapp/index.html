@@ -5,21 +5,35 @@
 
     {% include 'brewbookapp/navbar.html' %}
     <!-- create cards as many as the drinks -->
+    <div class="alert-container">
+        {% if message %}
+            <div class="alert alert-success"role="alert" id="drink-added">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
     <div class="container-lg my-5">
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
             {% for drink in drinks%}
                 <div class="col">
-                    <div class="card drink-card" data-bs-toggle="modal" data-bs-target="#drinkModal{{ drink.id }}">
+                    <div id="drinkCard{{ drink.id }}" class="card drink-card">
                         <img src="{{ drink.photo.url }}" class="card-img-top img-fluid" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{ drink.name }}</h5>
-                            <div class="card-ingredients">
+                            <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#drinkModal{{ drink.id }}">{{ drink.name }}</h5>
+                            <div class="card-ingredients mb-3">
                                 <ul>
                                     {% for ingredient in drink.ingredients.all %}
                                         <li>{{ ingredient.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
+                            <button 
+                                class="btn p-0 border-0 bg-transparent like-btn position-absolute bottom-0 end-0 m-2" 
+                                data-drink-id="{{ drink.id }}" 
+                                data-liked="{% if drink in liked_drinks%}true{% else %}false{% endif %}" 
+                                onclick="toggleLike(this)">
+                                <i class="bi {% if drink in liked_drinks%}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -27,15 +41,17 @@
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" id="drinkModal{{ drink.id }}" data-drink-id="{{ drink.id }}" aria-labelledby="drinkModal{{ drink.id }}" aria-hidden="true">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ drink.name }}</h1>
+                                <h1 class="modal-title fs-3" id="staticBackdropLabel">{{ drink.name }}</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body fs-5">
+                                <h4>Ingredients:</h4>
                                 <ul>
                                     {% for ingredient in drink.ingredients.all %}
                                         <li>{{ ingredient.name }}</li>
                                     {% endfor %}
                                 </ul>
+                                <h4>Steps:</h4>
                                 <p>{{ drink.instruction|linebreaksbr }}</p>
                                 <div class="video-container my-3">
                                     <div class="row">
@@ -60,13 +76,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <h4>More about {{ drink.name }}:</h4>
                                 {% if drink.fun_facts %}
                                     <p>{{ drink.fun_facts|linebreaksbr }}</p>
                                 {% endif %}
                             </div>
                             <div class="modal-footer">
+                                <button class="btn like-btn m-2" data-drink-id="{{ drink.id }}" onclick="toggleLike(this)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button data-drink-id="{{ drink.id }}" type="button" class="btn btn-primary edit-drink">Edit</button>
+
                             </div>
                         </div>
                     </div>

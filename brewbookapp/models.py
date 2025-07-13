@@ -18,7 +18,7 @@ class Ingredient(models.Model):
     drink = models.ForeignKey(Drink, on_delete=models.CASCADE, related_name="ingredients")
     name = models.CharField(max_length=100)
 
-class Favorite(models.Model):
+class Liked(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    drink = models.ForeignKey(Drink, on_delete=models.CASCADE, related_name='favorite_drink')
+    drink = models.ForeignKey(Drink, on_delete=models.CASCADE, related_name='liked_drinks')
     
