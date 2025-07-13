@@ -1,11 +1,10 @@
 **Brewbook**
 
-Brewbook is a web application. It can be used by baristas or anyone who is interested in coffee making. 
-The user can add drinks to the website, where thay can include videos, pictures and other descriptions 
-about the coffee. The user can also like the drinks. I implemented this feature so that the user can 
-see the liked drinks and learn making them. For example, when I was working as a barista, it was a bit
-confusing to distinguish between the coffees (as an always matcha lover). So, in this web app the user 
-can keep track of the drinks that they need to learn by liking them. 
+Brewbook is a comprehensive web application designed for baristas, coffee enthusiasts, and anyone 
+interested in learning more about coffee making. The app allows users to create and share detailed 
+drink recipes, including images, instructional videos (both uploaded and YouTube), and rich 
+descriptions. Additionally, users can “like” drinks to keep track of their favorites or the ones 
+they want to learn more about.
 
 **Distinctiveness and Complexity**
 
