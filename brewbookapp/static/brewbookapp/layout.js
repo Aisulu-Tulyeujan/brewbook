@@ -1,8 +1,11 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     hideAlert();
     editDrink();
     stopVideos();
     toggleLike();
+    deleteDrink();
+    getCSRFToken();
 })
 
 function hideAlert(){
@@ -22,6 +25,40 @@ function editDrink() {
             window.location.href = "/edit_drink/" + drinkId + "/";
         };
     })
+}
+function deleteDrink() {
+    const deleteBtns = document.querySelectorAll(".delete-drink");
+    deleteBtns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const drinkId = btn.dataset.drinkId;
+            const card = document.getElementById(`drinkCard${drinkId}`);
+            const modalElement = document.getElementById(`drinkModal${drinkId}`);
+
+            // Send DELETE request
+            fetch(`/delete_drink/${drinkId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken()
+                }
+            })
+            const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modal.hide();
+            card.remove()
+        });
+    });
+}
+
+// CSRF helper (add this if you don’t already have it)
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const trimmed = cookie.trim();
+        if (trimmed.startsWith(name + '=')) {
+            return decodeURIComponent(trimmed.substring(name.length + 1));
+        }
+    }
+    return '';
 }
 
 function stopVideos(){
@@ -74,3 +111,4 @@ function toggleLike(button) {
             .catch(error => console.error("Like error:", error));
     }
 }
+

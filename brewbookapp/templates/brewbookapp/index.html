@@ -12,10 +12,24 @@
             </div>
         {% endif %}
     </div>
-    <div class="container-lg my-5">
+    <div class="container-lg my-5" data-current-user="{{ user.username }}">
+        <div class="dropdown">
+            <button 
+                style="background-color: rgb(189, 132, 63); color: white;" 
+                class="btn dropdown-toggle my-3" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                Sort By
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'index' %}">All Drinks</a></li>
+                <li><a class="dropdown-item" href="{% url 'my_drinks' %}">My Drinks</a></li>
+                <li><a class="dropdown-item" href="{% url 'favorites' %}">Favorites</a></li>
+            </ul>
+        </div>
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
             {% for drink in drinks%}
-                <div class="col">
+                <div class="col"
+                    data-user="{{ drink.user.username }}"
+                    data-liked="{% if drink in liked_drinks %}true{% else %}false{% endif %}">
                     <div id="drinkCard{{ drink.id }}" class="card drink-card">
                         <img src="{{ drink.photo.url }}" class="card-img-top img-fluid" alt="...">
                         <div class="card-body">
@@ -82,12 +96,15 @@
                                 {% endif %}
                             </div>
                             <div class="modal-footer">
+                                <p>Created by: {{ drink.user.username }}</p>
                                 <button class="btn like-btn m-2" data-drink-id="{{ drink.id }}" onclick="toggleLike(this)">
                                     <i class="bi bi-heart"></i>
                                 </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button data-drink-id="{{ drink.id }}" type="button" class="btn btn-primary edit-drink">Edit</button>
-
+                                {% if user.username == drink.user.username %}
+                                    <button data-drink-id="{{ drink.id }}" type="button" class="btn btn-secondary delete-drink" onclick="deleteDrink(this)">Delete</button>
+                                    <button data-drink-id="{{ drink.id }}" type="button" class="btn btn-primary edit-drink">Edit</button>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

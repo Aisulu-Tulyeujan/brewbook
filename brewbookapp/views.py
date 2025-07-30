@@ -10,9 +10,30 @@ from brewbookapp.models import User, Drink, Liked, Ingredient
 
 def index(request):        
     drinks = Drink.objects.all()
-    liked_drinks = [like.drink for like in Liked.objects.filter(user=request.user)]
+    liked_drinks = []
+    if request.user.is_authenticated:
+        liked_drinks = [like.drink for like in Liked.objects.filter(user=request.user)]
     return render(request, "brewbookapp/index.html", {
         "drinks": drinks,
+        "liked_drinks":liked_drinks
+    })
+
+def my_drinks(request):
+    drinks = Drink.objects.filter(user=request.user)
+    liked_drinks = []
+    if request.user.is_authenticated:
+        liked_drinks = [like.drink for like in Liked.objects.filter(user=request.user)]
+    return render(request, "brewbookapp/index.html", {
+        "drinks": drinks,
+        "liked_drinks":liked_drinks
+    })
+
+def favorites(request):
+    liked_drinks = []
+    if request.user.is_authenticated:
+        liked_drinks = [like.drink for like in Liked.objects.filter(user=request.user)]
+    return render(request, "brewbookapp/index.html", {
+        "drinks": liked_drinks,
         "liked_drinks":liked_drinks
     })
 
@@ -31,9 +52,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
-def favorites(request):
-    pass
 
 def register(request):
     if request.method == "POST":
@@ -54,6 +72,7 @@ def register(request):
 
 def new_drink(request):
     if request.method == "POST":
+        user = request.user
         name = request.POST["name"]
         instruction = request.POST["instruction"]
         photo = request.FILES["photo"]
@@ -61,6 +80,7 @@ def new_drink(request):
         video_file = request.FILES.get("video_file")
         more_information = request.POST.get("more_information")
         drink = Drink(
+            user = user,
             name = name,
             instruction =instruction,
             photo = photo,
@@ -108,7 +128,11 @@ def edit_drink(request, drink_id):
         return render(request, 'brewbookapp/new_drink.html', {
             "drink": drink
         })
-    
+
+def delete_drink(request, drink_id):
+    if request.method == "POST":
+        drink = Drink.objects.get(id=drink_id, user=request.user)
+        drink.delete()
 
 def like(request, drink_id):
     drink = Drink.objects.get(id=drink_id)

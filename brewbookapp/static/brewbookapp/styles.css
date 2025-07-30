@@ -88,3 +88,29 @@
 .custom-like-btn {
   color: rgb(189, 132, 63);
 }
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.pagination .page-item .page-link {
+    color: #6c757d;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+    color: white;
+    background-color: rgb(189, 132, 63); 
+    border-color: rgb(189, 132, 63);
+}
+
+.d-none {
+    display: none !important;
+}
+
+.hide {
+    display: none !important;
+}

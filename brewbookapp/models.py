@@ -7,6 +7,7 @@ class User(AbstractUser):
     pass
 
 class Drink(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_drinks', null=True)
     name = models.CharField(max_length=100)
     instruction = models.TextField()
     photo = models.ImageField(upload_to='media/photos', blank=True, null=True)
